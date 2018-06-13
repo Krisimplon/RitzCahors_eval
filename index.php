@@ -10,7 +10,7 @@
   <div class="container">
   	<div class="row">  
   	  <div class="titlePage">
-      	<img src="logo.jpg" class="logoHotel" alt="logo hôtel" width="100px">
+      	<img src="logo.jpg" class="logoHotel" alt="logo hôtel">
         <h2>Gestion des réservations</h2>
       </div>
     </div>
@@ -25,7 +25,7 @@
             	  <th scope="col">Client</th>
             	  <th scope="col">Chambre</th>
             	  <th scope="col">Dates</th>
-            	  <th scope="col">Statut</th>
+            	  <th scope="col" class="responsiveCol">Statut</th>
             	  <th scope="col">Actions</th>
           		</tr>
         	  </thead>

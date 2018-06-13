@@ -44,7 +44,7 @@ class Reservation extends ConnectDB {
             echo '<td>'.$row["prenom"].' '.$row["nomclient"].'</td>';
             echo '<td>N° '.$row["numero"].'</td>';
             echo '<td>Du '.$row["dateEntree"].' au '.$row["dateSortie"].'</td>';
-            echo '<td>'.$row["statutresa"].'</td>';
+            echo '<td class="responsiveCol">'.$row["statutresa"].'</td>';
             echo '<td><a href="editResa.php?id='.$row['idResa'].'" class="btn btn-secondary btn-sm">Editer</a> <a href="deleteResa.php?id='.$row['idResa'].'" class="btn btn-secondary btn-sm">Supprimer</a></td>';
             echo "</tr>";
         }

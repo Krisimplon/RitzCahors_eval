@@ -23,8 +23,8 @@
       </div>
     </div>
   </div>
-<div class="container card text-center">
-  <div class="card-header">
+<div class="container card">
+  <div class="card-header text-center">
     Réservation N°<?php echo $idResa; ?>
   </div>
   <div class="row">

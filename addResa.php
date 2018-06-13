@@ -9,11 +9,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h2>Nouvelle réservation</h2>
-
-<div class="container">
+  <div class="container">
+    <div class="row">  
+      <div class="titlePage">
+        <img src="logo.jpg" class="logoHotel" alt="logo hôtel" width="100px">
+        <h2>Nouvelle réservation</h2>
+      </div>
+    </div>
+  </div>
+<div class="container card">
+  <div class="card-header text-center">
+    Nouvelle réservation
+  </div>
   <div class="row">
-    <div class="col-6">
+    <div class="col-6 card-body">
         <form method="POST">
             <div class="form-group row">
                 <label for="clientName" class="col-sm-4 col-form-label">Client</label>
@@ -59,12 +68,12 @@
                     </select>
                 </div>
             </div>
-            <button class="btn btn-outline-secondary" name="submitAdd">Enregistrer</button>
+            <button class="btn btn-secondary submitUpdate" name="submitAdd">Enregistrer</button>
         </form>
     </div>
   </div>
 </div>
-<a href="index.php" class="btn btn-outline-secondary">Retour</a>
+<a href="index.php" class="btn btn-secondary buttonRetour">Retour</a>
 </body>
 </html>
 
