@@ -9,6 +9,34 @@
 <body>
 	<h1>Accueil</h1>
 	<h2>Gestion des réservations</h2>
-	<?php include 'table.php'; ?>
+	<div class="container">
+  <div class="row">
+    <div class="col-10">
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Client</th>
+            <th scope="col">Chambre</th>
+            <th scope="col">Dates</th>
+            <th scope="col">Statut</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        <?php 
+          require 'database.php';
+
+          $table = new Reservation;
+          $table->readResa();
+        ?>
+
+        </tbody>
+      </table>
+      <a href="addResa.php" class="btn btn-dark">Nouvelle réservation</a>
+    </div>
+  </div>
+</div>
 </body>
 </html>

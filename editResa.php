@@ -1,14 +1,9 @@
 <?php
-
     require 'database.php'; 
-
     $idResa = $_GET['id'];
 
-
-    $formulaire = new ConnectDB;
-    $formulaire->connexion();
-    $result = $formulaire->editResa($idResa);
-
+    $formEdit = new Reservation;
+    $result = $formEdit->editResa($idResa);
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +26,9 @@
                 <div class="col-sm-8">
                     <select name="clientName" class="form-control">
                     <?php 
-                        echo '<option value='.$result["idResa"].'selected>'.$result["prenom"].' '.$result["nomclient"].'</option>';
+                        $formulaire = new AffichSelectResas;
+                        $formCli = $formulaire->affichSelectClient();
+                        echo '<option selected value='.$result["clientId"].'>'.$result["prenom"].' '.$result["nomclient"].'</option>';
                      ?> 
                     </select>       
                 </div>
@@ -41,7 +38,9 @@
                 <div class="col-sm-8">
                     <select name="chambre" class="form-control">
                     <?php 
-                        echo '<option value='.$result["idResa"].'>'.$result["nom"].'</option>';
+                        $formulaire = new AffichSelectResas;
+                        $formCham = $formulaire->affichSelectChambres();
+                        echo '<option selected value='.$result["chambreId"].'>N°'.$result["numero"].' : '.$result["nom"].'</option>';
                      ?> 
                     </select>
                 </div>
@@ -67,33 +66,35 @@
                 <div class="col-sm-8">
                     <select name="statut" class="form-control">
                         <?php 
-                        echo '<option value='.$result["idResa"].'>'.$result["statutresa"].'</option>';
+                        echo '<option value="valide">valide</option>
+                              <option value="attente">attente</option>
+                              <option value="refus">refus</option>
+                              <option selected value='.$result["statutresa"].'>'.$result["statutresa"].'</option>';
                         ?> 
                     </select>
                 </div>
             </div>
-            <input type="submit" value="Enregistrer">
+            <button class="btn btn-outline-secondary" name="submitUpdate">Enregistrer</button>
         </form>
     </div>
   </div>
 </div>
-
-<button class="btn btn-outline-secondary">Retour</button>
+<a href="index.php" class="btn btn-outline-secondary">Retour</a>
 </body>
 </html>
 
 <?php
+    $nomClient = $_POST['clientName'];
+    $room = $_POST['chambre'];
+    $dateEntree = $_POST['dateEntree'];
+    $dateSortie = $_POST['dateSortie'];
+    $statut = $_POST['statut'];
 
-	// $nomClient = $_POST['clientName'];
- //    $room = $_POST['chambre'];
- //    $dateEntree = $_POST['dateEntree'];
- //    $dateSortie = $_POST['dateSortie'];
- //    $statut = $_POST['statut'];
+    if(isset($_POST['submitUpdate']))
+    {
+        $updateReservation = new Reservation;
+        $upd = $updateReservation->updateResa($idResa,$nomClient,$room,$dateEntree,$dateSortie,$statut);
 
- //    if(!isset($_POST['submit']))
- //    {
- //        $creationResa = new ConnectDB;
- //        $creationResa->connexion();
- //        $creationResa->creerResa($nomClient,$room,$dateEntree,$dateSortie,$statut);
- //    }
+        header('Location: index.php');
+    }
 ?>

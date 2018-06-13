@@ -59,28 +59,25 @@
                     </select>
                 </div>
             </div>
-            <input type="submit" value="Enregistrer">
+            <button class="btn btn-outline-secondary" name="submitAdd">Enregistrer</button>
         </form>
     </div>
   </div>
 </div>
-
-<button class="btn btn-outline-secondary">Retour</button>
+<a href="index.php" class="btn btn-outline-secondary">Retour</a>
 </body>
 </html>
 
 <?php
-
 	$nomClient = $_POST['clientName'];
     $room = $_POST['chambre'];
     $dateEntree = $_POST['dateEntree'];
     $dateSortie = $_POST['dateSortie'];
     $statut = $_POST['statut'];
 
-    if(!isset($_POST['submit']))
+    if(isset($_POST['submitAdd']))
     {
-        $creationResa = new ConnectDB;
-        $creationResa->connexion();
+        $creationResa = new Reservation;
         $creationResa->createResa($nomClient,$room,$dateEntree,$dateSortie,$statut);
 
         header('Location: index.php');

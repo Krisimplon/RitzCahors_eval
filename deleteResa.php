@@ -1,13 +1,9 @@
 <?php
-
     require 'database.php'; 
-
     $idResa = $_GET['id'];
 
-    $messSuppResa = new ConnectDB;
-    $messSuppResa->connexion();
+    $messSuppResa = new Reservation;
     $messSupp = $messSuppResa->messDeleteResa($idResa);
-
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +16,6 @@
 </head>
 <body>
 	<h2>Suppression d'une réservation</h2>
-
 	<div>
 		<p>Etes-vous sûr de vouloir supprimer la réservation n° <?php echo $idResa; ?></p>
 		<div>
@@ -37,15 +32,13 @@
 	</div>
 	
 	<?php 
-
 		if (isset($_POST['submit'])) {
-			$suppResa = new ConnectDB;
-    		$suppResa->connexion();
+			$suppResa = new Reservation;
     		$suppResa->deleteResa($idResa);
 
     		header('Location: index.php');
 		}
-
 	 ?>
+	 
 </body>
 </html>
