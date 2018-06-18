@@ -34,20 +34,56 @@ class Reservation extends ConnectDB {
     //function for to read the reservation's table
     public function readResa() 
     { 
-        $req = $this->bdd->prepare("SELECT *, clients.nom AS nomclient, reservations.statut AS statutresa, reservations.id AS idResa FROM reservations, clients, chambres WHERE reservations.clientId = clients.id AND reservations.chambreId = chambres.id");
+        $page = (!empty($_GET['page']) ? $_GET['page'] : 1);
+        $limite = 5;
+        $debut = ($page - 1) * $limite;
+
+        $req = $this->bdd->prepare("SELECT SQL_CALC_FOUND_ROWS *, clients.nom AS nomclient, reservations.statut AS statutresa, reservations.id AS idResa, CAST(dateEntree AS date)as dateEntree, CAST(dateSortie AS date)as dateSortie FROM reservations, clients, chambres WHERE reservations.clientId = clients.id AND reservations.chambreId = chambres.id LIMIT :limite OFFSET :debut");
+
+        $req->bindValue('limite', $limite, PDO::PARAM_INT);
+        $req->bindValue('debut', $debut, PDO::PARAM_INT);
+
         $req->execute();
         $result = $req->fetchAll();
 
         foreach($result as $row){
             echo "<tr>";
-            echo '<th scope="row">'.$row["idResa"].'</th>';
-            echo '<td>'.$row["prenom"].' '.$row["nomclient"].'</td>';
-            echo '<td>N° '.$row["numero"].'</td>';
-            echo '<td>Du '.$row["dateEntree"].' au '.$row["dateSortie"].'</td>';
-            echo '<td class="responsiveCol">'.$row["statutresa"].'</td>';
-            echo '<td><a href="editResa.php?id='.$row['idResa'].'" class="btn btn-secondary btn-sm">Editer</a> <a href="deleteResa.php?id='.$row['idResa'].'" class="btn btn-secondary btn-sm">Supprimer</a></td>';
+            echo '<th scope="row" class="responsiveTable">'.$row["idResa"].'</th>';
+            echo '<td class="responsiveTable">'.$row["prenom"].' '.$row["nomclient"].'</td>';
+            echo '<td class="responsiveTable">N° '.$row["numero"].'</td>';
+            echo '<td class="responsiveTable">Du '.$row["dateEntree"].' au '.$row["dateSortie"].'</td>';
+            echo '<td class="responsiveSuppCol">'.$row["statutresa"].'</td>';
+            echo '<td class="responsiveTable"><a href="editResa.php?id='.$row['idResa'].'"class="btn btn-secondary btn-sm btn-supp">Editer</a> <a href="deleteResa.php?id='.$row['idResa'].'"class="btn btn-secondary btn-sm btn-supp">Supprimer</a>
+              <div class="dropleft responsiveDrop">
+              <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a href="editResa.php?id='.$row['idResa'].'" class="dropdown-item">Editer</a>
+              <a href="deleteResa.php?id='.$row['idResa'].'" class="dropdown-item">Supprimer</a>
+              </div>
+            </div></td>';
             echo "</tr>";
         }
+
+        echo '<nav aria-label="Page navigation example" class="paginationNav"><ul class="pagination">';
+
+        $resultFoundRows = $this->bdd->query('SELECT found_rows()');
+        $nombredElementsTotal = $resultFoundRows->fetchColumn();
+        $nombreDePages = ceil($nombredElementsTotal / $limite); 
+
+        if ($page > 1):
+            echo '<a href="index.php?page='.($page - 1).'" class="page-link">Page précédente</a>';
+        endif;
+
+        for ($i = 1; $i <= $nombreDePages; $i++):
+            echo '<a href="index.php?page='.$i.'" class="page-link">'.$i.'</a>';
+        endfor;
+
+        if ($page < $nombreDePages):
+            echo '<a href="index.php?page='.($page + 1).'" class="page-link">Page suivante</a>';
+        endif;
+
+        echo '</ul></nav>';
     }
 
     //function for to create a new reservation on database
@@ -60,7 +96,7 @@ class Reservation extends ConnectDB {
     //function for to print the infos of a reservation with id(GET)
     public function editResa($idResa) 
     { 
-        $req = $this->bdd->prepare("SELECT *, clients.nom AS nomclient, reservations.statut AS statutresa, reservations.id AS idResa FROM reservations, clients, chambres WHERE reservations.id = $idResa AND reservations.clientId = clients.id AND reservations.chambreId = chambres.id");
+        $req = $this->bdd->prepare("SELECT *, clients.nom AS nomclient, reservations.statut AS statutresa, reservations.id AS idResa, CAST(dateEntree AS date)as dateEntree, CAST(dateSortie AS date)as dateSortie FROM reservations, clients, chambres WHERE reservations.id = $idResa AND reservations.clientId = clients.id AND reservations.chambreId = chambres.id");
         $req->execute();
         $resultat = $req->fetch();
 
@@ -79,7 +115,7 @@ class Reservation extends ConnectDB {
     //function for to print confirmation of delete's action to a reservation
     public function messDeleteResa($idResa) 
     { 
-        $req = $this->bdd->prepare("SELECT *, clients.nom AS nomclient, reservations.id AS idResa  FROM reservations, clients, chambres WHERE reservations.id = $idResa AND reservations.clientId = clients.id AND reservations.chambreId = chambres.id");
+        $req = $this->bdd->prepare("SELECT *, clients.nom AS nomclient, reservations.id AS idResa, CAST(dateEntree AS date)as dateEntree, CAST(dateSortie AS date)as dateSortie FROM reservations, clients, chambres WHERE reservations.id = $idResa AND reservations.clientId = clients.id AND reservations.chambreId = chambres.id");
         $req->execute();
         $resultatDelete = $req->fetch();
 
@@ -101,26 +137,38 @@ class Reservation extends ConnectDB {
 class AffichSelectResas extends ConnectDB {
 
      //select differents clients
-     public function affichSelectClient() 
+     public function affichSelectClient($defaut_id) 
      { 
         $req = $this->bdd->prepare("SELECT * FROM clients");
         $req->execute();
         $resultat = $req->fetchAll();
 
         foreach($resultat as $row){
-           echo '<option value='.$row["id"].'>'.$row["prenom"].' '.$row["nom"].'</option>';
+            if ($defaut_id == $row["id"]) {
+                echo '<option selected value='.$row["id"].'>'.$row["prenom"].' '.$row["nom"].'</option>';
+            }
+
+            else {
+                echo '<option value='.$row["id"].'>'.$row["prenom"].' '.$row["nom"].'</option>';
+            }
         }
       }
 
      //select differents rooms
-     public function affichSelectChambres() 
+     public function affichSelectChambres($defaut_id) 
      { 
         $req = $this->bdd->prepare("SELECT * FROM chambres");
         $req->execute();
         $resultat = $req->fetchAll();
 
         foreach($resultat as $row){
-            echo '<option value='.$row["id"].'>N°'.$row["numero"].' : '.$row["nom"].'</option>';
+            if ($defaut_id == $row["id"]) {
+                echo '<option selected value='.$row["id"].'>N°'.$row["numero"].' : '.$row["nom"].'</option>';
+            }
+
+            else {
+                echo '<option value='.$row["id"].'>N°'.$row["numero"].' : '.$row["nom"].'</option>';
+            }
         }
       }
     }

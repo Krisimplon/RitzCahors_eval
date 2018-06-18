@@ -33,9 +33,9 @@
 			<p><?php echo 'Au '.$messSupp["dateSortie"]; ?></p>
 		</div>
 		<div class="buttonDelete">
-			<a href="index.php" class="btn btn-secondary">Annuler</a>
+			<a href="index.php" class="btn btn-secondary responsivebtn">Annuler</a>
 			<form method="POST">
-				<button class="btn btn-secondary" name="submit">Confirmer la suppression</button>
+				<button class="btn btn-secondary responsivebtn" name="submit">Confirmer la suppression</button>
 			</form>
 		</div>
 	</div>

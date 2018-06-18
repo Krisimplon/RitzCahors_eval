@@ -39,13 +39,61 @@ body {
 }
 
 /*css page index*/
+.paginationNav {
+	float: right;
+}
+
+.page-link {
+	color: white;
+	background-color: #212529;
+}
+
+.page-link:hover {
+	color: #212529;
+	background-color: white;
+}
+
 @media screen and (max-width: 479px) {
-  .responsiveCol {
+  .responsiveSuppCol {
 	display: none;
+  }
+
+  .responsiveTable {
+	font-size: 0.65rem;
+  }
+
+  .responsiveContainer {
+  	margin-left: -40px;
+  }
+
+  .responsivebtn {
+  	font-size: 0.800rem;
+  }
+
+  .paginationNav {
+	float: left;
+	font-size: 0.65rem;
   }
 }
 
-/*css page editResa*/
+/*css page responsive addResa et editResa*/
+@media screen and (max-width: 479px) {
+	.responsiveRow {
+	  margin-right: -75px;
+	  margin-left: -75px;
+	}
+
+	.card {
+		width: 90% !important;
+	}
+
+	.buttonRetour {
+		margin: auto !important;
+		margin-top: 15px !important;
+	}
+  }
+
+/*css page addResa et editResa*/
 .card {
 	display: flex;
 	width: 60%;
@@ -58,6 +106,7 @@ body {
 .buttonRetour {
 	margin-right: 78.7%;
 	margin-top: 25px;
+	margin-bottom: 10px;
 }
 
 /*css page delete*/
@@ -67,13 +116,34 @@ body {
 	margin: auto;
 	margin-bottom: 20px;
 	display: flex;
-	flex-wrap: wrap;
 	flex-direction: row;
 	justify-content: space-around;
 }
 
-/*@media screen and (max-width: 479px) {
-  .buttonDelete {
-	
+/*css page responsive deleteResa*/
+@media screen and (max-width: 479px) {
+	h5 {
+		font-size: 1rem;
+	}
+
+	.buttonDelete {
+		width: 100%;
+	}
   }
-}*/
+
+  /*css tableau index*/
+@media screen and (max-width: 479px) {
+  .btn-supp {
+  	display: none !important;
+  }
+
+  .dropdown-toggle {
+  	width: 50px;
+  }
+}
+
+@media screen and (min-width: 479px) {
+  .responsiveDrop {
+  	display: none !important;
+  }
+}

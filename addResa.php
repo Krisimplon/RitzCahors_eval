@@ -1,4 +1,6 @@
-<?php require 'database.php'; ?>
+<?php require 'database.php'; 
+$defaut = "";
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,42 +26,42 @@
   <div class="row">
     <div class="col-6 card-body">
         <form method="POST">
-            <div class="form-group row">
-                <label for="clientName" class="col-sm-4 col-form-label">Client</label>
+            <div class="form-group row responsiveRow">
+                <label for="clientName" class="col-sm-4 col-form-label responsiveTable">Client</label>
                 <div class="col-sm-8">
                     <select name="clientName" class="form-control">
                     <?php 
                         $formulaire = new AffichSelectResas;
-                        $formulaire->affichSelectClient();
+                        $formulaire->affichSelectClient($defaut);
                      ?> 
                     </select>       
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="chambre" class="col-sm-4 col-form-label">Chambre</label>
+            <div class="form-group row responsiveRow">
+                <label for="chambre" class="col-sm-4 col-form-label responsiveTable">Chambre</label>
                 <div class="col-sm-8">
                     <select name="chambre" class="form-control">
                     <?php 
                         $formulaire = new AffichSelectResas;
-                        $formulaire->affichSelectChambres();
+                        $formulaire->affichSelectChambres($defaut);
                     ?>
                     </select>
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="dateEntree" class="col-sm-4 col-form-label">Date d'entrée</label>
+            <div class="form-group row responsiveRow">
+                <label for="dateEntree" class="col-sm-4 col-form-label responsiveTable">Date d'entrée</label>
                 <div class="col-sm-8">
                     <input type="Date" name="dateEntree" class="form-control">
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="dateSortie" class="col-sm-4 col-form-label">Date de sortie</label>
+            <div class="form-group row responsiveRow">
+                <label for="dateSortie" class="col-sm-4 col-form-label responsiveTable">Date de sortie</label>
                 <div class="col-sm-8">
                     <input type="Date" name="dateSortie" class="form-control">
                 </div>
             </div>
-            <div class="form-group row">
-                <label for="statut" class="col-sm-4 col-form-label">Statut</label>
+            <div class="form-group row responsiveRow">
+                <label for="statut" class="col-sm-4 col-form-label responsiveTable">Statut</label>
                 <div class="col-sm-8">
                     <select name="statut" class="form-control">
                         <option value="valide">valide</option>
@@ -68,12 +70,12 @@
                     </select>
                 </div>
             </div>
-            <button class="btn btn-secondary submitUpdate" name="submitAdd">Enregistrer</button>
+            <button class="btn btn-secondary submitUpdate responsivebtn" name="submitAdd">Enregistrer</button>
         </form>
     </div>
   </div>
 </div>
-<a href="index.php" class="btn btn-secondary buttonRetour">Retour</a>
+<a href="index.php" class="btn btn-secondary buttonRetour responsivebtn">Retour</a>
 </body>
 </html>
 
