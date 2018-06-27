@@ -61,6 +61,14 @@ body {
 	background-color: #212529;
 }
 
+.btnNewResa {
+	margin-bottom: 20px;
+	background-color: #212529;
+}
+
+.btnNewResa:hover {
+	background-color: #343a40;
+}
 @media screen and (max-width: 479px) {
   .responsiveSuppCol {
 	display: none;

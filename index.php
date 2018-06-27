@@ -19,7 +19,7 @@ require 'database.php';
       </div>
     </div>
   </div>
-  <div class="buttonFilters">
+  <div class="buttonFilters col-md-10 .offset-md-10">
       <select name="selectFilterCli" class="btn btn-secondary dropdown-toggle filtersBtn" id="filterClients">
         <option selected value="0">Clients</option>
         <?php 
@@ -63,7 +63,7 @@ require 'database.php';
 
         	  </tbody>
       		</table>
-      		<a href="addResa.php" class="btn btn-dark responsivebtn">Nouvelle réservation</a>
+      		<a href="addResa.php" class="btn btn-dark responsivebtn btnNewResa">Nouvelle réservation</a>
     	  </div>
   		</div>
 	  </div>
