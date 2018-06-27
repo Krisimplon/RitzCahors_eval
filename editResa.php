@@ -25,7 +25,7 @@
   </div>
 <div class="container card">
   <div class="card-header text-center">
-    Réservation N°<?php echo $idResa; ?>
+    Réservation N°<?php echo $idResa;?>
   </div>
   <div class="row">
     <div class="col-6 card-body">
@@ -35,8 +35,18 @@
           <div class="col-sm-8">
             <select name="clientName" class="form-control">
                 <?php 
+
                     $formulaire = new AffichSelectResas;
-                    $formCli = $formulaire->affichSelectClient($result["clientId"]);
+                    foreach($formulaire->affichSelectClient()->fetchAll() as $row){
+                      if ($result["clientId"] == $row["id"]) {
+                          echo '<option selected value='.$row["id"].'>'.$row["prenom"].' '.$row["nom"].'</option>';
+                      }
+
+                      else {
+                          echo '<option value='.$row["id"].'>'.$row["prenom"].' '.$row["nom"].'</option>';
+                      }
+                    };
+
                 ?> 
             </select>       
           </div>
@@ -46,8 +56,17 @@
           <div class="col-sm-8">
             <select name="chambre" class="form-control">
                 <?php 
-                    $formulaire = new AffichSelectResas;
-                    $formCham = $formulaire->affichSelectChambres($result["chambreId"]);
+
+                    $formResa = new AffichSelectResas;
+                    foreach($formResa->affichSelectChambres()->fetchAll() as $row){
+                      if ($result["chambreId"] == $row["id"]) {
+                          echo '<option selected value='.$row["id"].'>N°'.$row["numero"].' : '.$row["nom"].'</option>';
+                      }
+
+                      else {
+                          echo '<option value='.$row["id"].'>N°'.$row["numero"].' : '.$row["nom"].'</option>';
+                      }
+                  }
                 ?> 
             </select>
           </div>

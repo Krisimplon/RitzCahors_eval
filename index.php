@@ -1,3 +1,7 @@
+<?php     
+require 'database.php'; 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +19,30 @@
       </div>
     </div>
   </div>
+  <div class="buttonFilters">
+      <select name="selectFilterCli" class="btn btn-secondary dropdown-toggle filtersBtn" id="filterClients">
+        <option selected value="0">Clients</option>
+        <?php 
+          $filtrecli = new AffichSelectResas;
+          foreach($filtrecli->filterClient()->fetchAll() as $line) {
+            echo '<option value="'.$line["id"].'" class="dropdown-item">'.$line["prenom"].' '.$line["nom"].'</option>'; 
+          } 
+        ?>
+      </select>
+      <select name="selectFilterRoom" class="btn btn-secondary dropdown-toggle filtersBtn" id="filterRooms">
+        <option selected value="0">Chambres</option>
+        <?php 
+          $filtreroom = new AffichSelectResas;
+          foreach($filtreroom->filterRoom()->fetchAll() as $line) {
+            echo '<option value="'.$line["id"].'" class="dropdown-item">'.$line["nom"].' : '.$line["numero"].'</option>'; 
+          } 
+        ?>
+      </select>
+  </div>
 	  <div class="container responsiveContainer">
   	    <div class="row">
    		  <div class="col-10">
-      		<table class="table table-striped">
+      		<table class="table table-striped" id="tableauResa">
         	  <thead class="thead-dark">
          		<tr>
             	  <th scope="col" class="responsiveTable">ID</th>
@@ -29,13 +53,12 @@
             	  <th scope="col" class="responsiveTable">Actions</th>
           		</tr>
         	  </thead>
-        	  <tbody>
+        	  <tbody id="tableauFilter">
 
 			  <?php 
-			    require 'database.php';
 
 			    $table = new Reservation;
-			    $table->readResa();
+          $table->readResa();
 			  ?>
 
         	  </tbody>
@@ -44,7 +67,10 @@
     	  </div>
   		</div>
 	  </div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 <script type="text/javascript" src="app.js"></script>

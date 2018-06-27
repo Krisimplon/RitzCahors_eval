@@ -53,6 +53,14 @@ body {
 	background-color: white;
 }
 
+.buttonFilters {
+	display: flex;
+}
+
+.filtersBtn {
+	background-color: #212529;
+}
+
 @media screen and (max-width: 479px) {
   .responsiveSuppCol {
 	display: none;

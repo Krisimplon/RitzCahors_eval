@@ -1,5 +1,8 @@
 <?php 
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 //class to connect to database RitzCahors_eval
 class ConnectDB
 {
@@ -32,18 +35,31 @@ class ConnectDB
 class Reservation extends ConnectDB {
 
     //function for to read the reservation's table
-    public function readResa() 
+    public function readResa($idClient = NULL, $idRoom = NULL) 
     { 
         $page = (!empty($_GET['page']) ? $_GET['page'] : 1);
         $limite = 5;
         $debut = ($page - 1) * $limite;
 
-        $req = $this->bdd->prepare("SELECT SQL_CALC_FOUND_ROWS *, clients.nom AS nomclient, reservations.statut AS statutresa, reservations.id AS idResa, CAST(dateEntree AS date)as dateEntree, CAST(dateSortie AS date)as dateSortie FROM reservations, clients, chambres WHERE reservations.clientId = clients.id AND reservations.chambreId = chambres.id LIMIT :limite OFFSET :debut");
+        $filtres = "";
+        if($idClient && $idRoom) {
+            $filtres = " AND clients.id = $idClient AND chambres.id = $idRoom";
+        }
+        elseif($idClient) {
+            $filtres = " AND clients.id = $idClient";
+        }
+        elseif($idRoom) {
+            $filtres = "AND chambres.id = $idRoom";
+        }
+
+        $req = $this->bdd->prepare("SELECT SQL_CALC_FOUND_ROWS *, clients.nom AS nomclient, reservations.statut AS statutresa, reservations.id AS idResa, CAST(dateEntree AS date)as dateEntree, CAST(dateSortie AS date)as dateSortie FROM reservations, clients, chambres WHERE reservations.clientId = clients.id AND reservations.chambreId = chambres.id " . $filtres . " LIMIT :limite OFFSET :debut");
+
 
         $req->bindValue('limite', $limite, PDO::PARAM_INT);
         $req->bindValue('debut', $debut, PDO::PARAM_INT);
 
         $req->execute();
+
         $result = $req->fetchAll();
 
         foreach($result as $row){
@@ -137,40 +153,38 @@ class Reservation extends ConnectDB {
 class AffichSelectResas extends ConnectDB {
 
      //select differents clients
-     public function affichSelectClient($defaut_id) 
-     { 
+    public function affichSelectClient() 
+    { 
         $req = $this->bdd->prepare("SELECT * FROM clients");
         $req->execute();
-        $resultat = $req->fetchAll();
 
-        foreach($resultat as $row){
-            if ($defaut_id == $row["id"]) {
-                echo '<option selected value='.$row["id"].'>'.$row["prenom"].' '.$row["nom"].'</option>';
-            }
-
-            else {
-                echo '<option value='.$row["id"].'>'.$row["prenom"].' '.$row["nom"].'</option>';
-            }
-        }
-      }
+        return $req;
+    }
 
      //select differents rooms
-     public function affichSelectChambres($defaut_id) 
-     { 
+    public function affichSelectChambres() 
+    { 
         $req = $this->bdd->prepare("SELECT * FROM chambres");
         $req->execute();
-        $resultat = $req->fetchAll();
 
-        foreach($resultat as $row){
-            if ($defaut_id == $row["id"]) {
-                echo '<option selected value='.$row["id"].'>N°'.$row["numero"].' : '.$row["nom"].'</option>';
-            }
-
-            else {
-                echo '<option value='.$row["id"].'>N°'.$row["numero"].' : '.$row["nom"].'</option>';
-            }
-        }
-      }
+        return $req;
     }
+
+    public function filterClient()
+    {
+        $requete = $this->bdd->prepare("SELECT nom, prenom, id FROM clients");
+        $requete->execute();
+
+        return $requete;
+    }
+
+    public function filterRoom()
+    {
+        $requete = $this->bdd->prepare("SELECT nom, numero, id FROM chambres");
+        $requete->execute();
+
+        return $requete;
+    }
+}
 
  ?>

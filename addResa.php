@@ -32,7 +32,11 @@ $defaut = "";
                     <select name="clientName" class="form-control">
                     <?php 
                         $formulaire = new AffichSelectResas;
-                        $formulaire->affichSelectClient($defaut);
+
+                        foreach($formulaire->affichSelectClient()->fetchAll() as $row) {
+                          echo '<option value='.$row["id"].'>'.$row["prenom"].' '.$row["nom"].'</option>';
+                        }
+
                      ?> 
                     </select>       
                 </div>
@@ -42,8 +46,11 @@ $defaut = "";
                 <div class="col-sm-8">
                     <select name="chambre" class="form-control">
                     <?php 
-                        $formulaire = new AffichSelectResas;
-                        $formulaire->affichSelectChambres($defaut);
+                        $formResa = new AffichSelectResas;
+                        
+                        foreach($formResa->affichSelectChambres()->fetchAll() as $row){
+                          echo '<option value='.$row["id"].'>N°'.$row["numero"].' : '.$row["nom"].'</option>';
+                      }
                     ?>
                     </select>
                 </div>
@@ -91,6 +98,8 @@ $defaut = "";
         $creationResa = new Reservation;
         $creationResa->createResa($nomClient,$room,$dateEntree,$dateSortie,$statut);
 
-        header('Location: index.php');
+        echo '<div class="alert alert-secondary" role="alert">Votre réservation a été enregistrée avec succès!</div> <meta http-equiv="Refresh" content="2;url=index.php">';
+
+        // header('Location: index.php');
     }
 ?>
